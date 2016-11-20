@@ -11,6 +11,8 @@ void guess(char, char [], char []);
 void showFigure(int );
 void guessWord(char []);
 void renderWord(char []);
+bool letterExist(char, char []);
+bool wordComplete(char [], char []);
 
 int main()
 {
@@ -35,15 +37,31 @@ int main()
 	
 	while (gameOver != true) {
 		
-		
-		//showFigure(i);
+		printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		showFigure(i);
+		printf("\n");
 		renderWord(anoWord);
 		
 		printf("\nenter a letter: ");
-		fflush(stdin);
+		fflush(stdin); //flush the buffer
 		scanf("%c", &guessLetter);
 		
-		guess(guessLetter, anoWord, word);
+		if(letterExist(guessLetter, word)) {
+			printf("\nYou are correct!");
+			guess(guessLetter, anoWord, word);
+		} else {
+			printf("\nThere is no letter %c in the word", guessLetter);
+			i++;
+		}
+		
+		if (i == 7) {
+			printf("\nGame Over");
+			gameOver = true;
+		} else if (wordComplete(anoWord, word)) {
+			printf("\nCongratulations! You guessed the word.");
+			gameOver = true;
+		}
+			
 		
 		
 	}
@@ -172,14 +190,39 @@ void guess(char letra, char word[], char originalWord[])
 	int i = 0;
 	while (originalWord[i] != 0){
 		if (letra == originalWord[i]) {
-			printf("\nmatch");
 			word[i] = letra;
-		} else {
-			printf("\nnot match because %c != %c ", letra, originalWord[i]);
 		}
 		i++;
 	}
-	printf("\nguess function done i = %d\n", i);
+}
+
+bool letterExist(char letra, char originalWord[])
+{
+	int i = 0;
+	while(originalWord[i] != 0) {
+		if(letra == originalWord[i])
+			return true;
+		i++;
+	}
+	return false;
+}
+
+bool wordComplete(char word[],char originalWord[])
+{
+	int i = 0;
+	int counter = 0;
+	int length = strlen(originalWord);
+	while (originalWord[i] != 0) {
+		if(word[i] == originalWord[i]){
+			counter++;
+		}
+		i++;
+	}
+	
+	if (counter == length)
+		return true;
+	else
+		return false;
 }
 
 
