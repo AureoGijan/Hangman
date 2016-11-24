@@ -21,8 +21,12 @@ int main()
 	char word[40];
 	char anoWord[40];
 	char guessLetter;
+	char choice;
 	int i = 0;
 	int wordLength;
+	bool gameReset = true;
+	
+	while (gameReset != false) {
 	
 	printf("please enter your name: ");
 	scanf("%s", playerName);
@@ -37,35 +41,65 @@ int main()
 	
 	while (gameOver != true) {
 		
-		printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n");
 		showFigure(i);
-		printf("\n");
+		printf("\t");
 		renderWord(anoWord);
 		
+		if (i < 7) {
 		printf("\nenter a letter: ");
 		fflush(stdin); //flush the buffer
 		scanf("%c", &guessLetter);
 		
+		
+		printf("\nMessage: ");
 		if(letterExist(guessLetter, word)) {
-			printf("\nYou are correct!");
+			printf("You are correct!");
 			guess(guessLetter, anoWord, word);
 		} else {
-			printf("\nThere is no letter %c in the word", guessLetter);
+			printf("There is no letter %c in the word", guessLetter);
 			i++;
+		}
 		}
 		
 		if (i == 7) {
-			printf("\nGame Over");
+			printf("\n\n\n\n\n\n\n\n");
+			showFigure(i);
+			printf("\nGame Over! %s is a name for LOSERS!", playerName);
 			gameOver = true;
-		} else if (wordComplete(anoWord, word)) {
-			printf("\nCongratulations! You guessed the word.");
+		}else if (wordComplete(anoWord, word)) {
+			printf("\nCongratulations %s! You guessed the word.", playerName);
 			gameOver = true;
 		}
-			
 		
+		if (gameOver != true) {
+		printf("\t\t press Enter: ");
+		getchar();
+		getchar();
+		}
 		
+
 	}
 	
+	begin: {printf("\nEnter y to enter again or n to quit: ");
+	fflush(stdin);
+	scanf("%c", &choice);
+	switch (choice) {
+		case 'y':
+			gameReset = true;
+			gameOver = false;
+			break;
+		case 'n':
+			gameReset = false;
+			break;
+		default:
+			printf("Come on, choose between the two!");
+			goto begin;
+	}
+	}
+	
+	
+	}
 	
 	return 0;
 }
